@@ -67,6 +67,6 @@ echo "----------------------------------------" >&3
 echo " " >&3
 
 confBase64=$(cat wgcf-profile.conf | base64 -w 0)
-echo "Скачать: https://xianerydev.vercel.app/?filename=cloudflare_warp.conf&data=SGVsbG8=$confBase64" >&3
+echo "Скачать: https://xianerydev.vercel.app/api/download?filename=cloudflare_warp.conf&data=SGVsbG8=$confBase64" >&3
 
 exec 1>&3 3>&-
