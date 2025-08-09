@@ -50,7 +50,7 @@ H4 = 4
 MTU = 1280
 Address = 172.16.0.2/32
 DNS = 1.1.1.1
-Obfuscation = true
+
 
 [Peer]
 PublicKey = $publicKey=
