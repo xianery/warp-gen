@@ -1,8 +1,13 @@
 #!/bin/bash
 
 echo "Установка зависимостей и wgcf..."
-sudo apt-get update -y --fix-missing && sudo apt-get install wireguard-tools jq wget -y --fix-missing
-curl -fsSL https://raw.githubusercontent.com/ViRb3/wgcf/master/wgcf_install.sh | sudo bash
+sudo apt update
+sudo apt-get update -y --fix-missing && sudo apt-get install wireguard-tools curl jq wget -y --fix-missing
+
+WGCF_VERSION="v2.2.18"
+wget "https://github.com/ViRb3/wgcf/releases/download/${WGCF_VERSION}/wgcf_${WGCF_VERSION}_linux_amd64" -O wgcf
+chmod +x wgcf
+sudo mv wgcf /usr/local/bin/
 
 echo "Создание профиля WARP..."
 wgcf register --accept-tos
