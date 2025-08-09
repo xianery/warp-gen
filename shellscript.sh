@@ -32,14 +32,14 @@ fi
 
 echo "-# Ключи" >&3
 echo "----------------------------------------" >&3
-echo "PrivateKey (ваш ключ): $privateKey" >&3
-echo "PublicKey (сервера):   $publicKey" >&3
+echo "PrivateKey (ваш ключ): $privateKey=" >&3
+echo "PublicKey (сервера):   $publicKey=" >&3
 echo "----------------------------------------" >&3
 
 cloudflareAmnesiaConf="cloudflareWARP.conf"
 cat > "$cloudflareAmnesiaConf" <<EOF
 [Interface]
-PrivateKey = $privateKey
+PrivateKey = $privateKey=
 Jc = 120
 Jmin = 23
 Jmax = 911
@@ -53,7 +53,7 @@ DNS = 1.1.1.1
 Obfuscation = true
 
 [Peer]
-PublicKey = $publicKey
+PublicKey = $publicKey=
 AllowedIPs = 0.0.0.0/0
 Endpoint = engage.cloudflareclient.com:2408
 PersistentKeepalive = 10   
