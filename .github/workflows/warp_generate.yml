@@ -27,4 +27,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: sudo bash <(curl -sSL https://raw.githubusercontent.com/xianery/warp-gen/main/shellscript.sh)
