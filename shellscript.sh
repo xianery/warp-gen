@@ -1,9 +1,8 @@
 #!/bin/bash
 
-if ! command -v wgcf &> /dev/null; then
-    echo "Установка wgcf..."
-    curl -fsSL https://raw.githubusercontent.com/ViRb3/wgcf/master/wgcf_install.sh | sudo bash
-fi
+echo "Установка зависимостей и wgcf..."
+sudo apt-get update -y --fix-missing && sudo apt-get install wireguard-tools jq wget -y --fix-missing
+curl -fsSL https://raw.githubusercontent.com/ViRb3/wgcf/master/wgcf_install.sh | sudo bash
 
 echo "Создание профиля WARP..."
 wgcf register --accept-tos
@@ -26,20 +25,29 @@ cloudflareAmnesiaConf="cloudflareWARP.conf"
 cat > "$cloudflareAmnesiaConf" <<EOF
 [Interface]
 PrivateKey = $PRIVATE_KEY
-Address = 10.0.0.2/24
+Jc = 120
+Jmin = 23
+Jmax = 911
+H1 = 1
+H2 = 2
+H3 = 3
+H4 = 4
+MTU = 1280
+Address = 172.16.0.2/32
 DNS = 1.1.1.1
 Obfuscation = true
-MTU = 1400
 
 [Peer]
 PublicKey = $PUBLIC_KEY
-Endpoint = engage.cloudflareclient.com:2408
 AllowedIPs = 0.0.0.0/0
-PersistentKeepalive = 25
+Endpoint = engage.cloudflareclient.com:2408
+PersistentKeepalive = 10   
 EOF
 
 echo "\n" 
+echo "-# Начало"
 echo "$cloudflareAmnesiaConf"
+echo "-# Конец"
 echo "\n"
 echo "PublicKey сервера WARP: $PUBLIC_KEY"
 echo "PrivateKey клиента: $PRIVATE_KEY"
