@@ -64,3 +64,7 @@ echo "-# Конфиг"
 echo "----------------------------------------"
 cat cloudflareWARP.conf
 echo "----------------------------------------"
+echo "\n"
+
+confBase64=$(cat wgcf-profile.conf | base64 -w 0)
+echo "Скачать: https://xianerydev.vercel.app/?filename=cloudflare_warp.conf&data=SGVsbG8=$confBase64"
