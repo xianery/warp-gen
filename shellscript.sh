@@ -16,20 +16,8 @@ echo "Создание профиля WARP..."
 wgcf register --accept-tos
 wgcf generate
 warpCfg="wgcf-profile.conf"
-if [ ! -f "$warpCfg" ]; then
-    echo "Ошибка: файл $warpCfg не найден!"
-    exit 1
-fi
-
 privateKey=$(grep -E "^PrivateKey[[:space:]]*=" "$warpCfg" | cut -d '=' -f 2 | tr -d '[:space:]')
 publicKey=$(grep -A1 -E "^\[Peer\]" "$warpCfg" | grep -E "^PublicKey[[:space:]]*=" | cut -d '=' -f 2 | tr -d '[:space:]')
-
-if [ -z "$privateKey" ] || [ -z "$publicKey" ]; then
-    echo "Ошибка: не удалось извлечь ключи из $warpCfg!"
-    echo "Проверьте содержимое файла:"
-    cat "$warpCfg"
-    exit 1
-fi
 
 echo "-# Ключи" >&3
 echo "----------------------------------------" >&3
