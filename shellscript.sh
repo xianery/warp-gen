@@ -51,7 +51,7 @@ EOF
 
 echo "\n" 
 echo "-# Начало"
-echo "$cloudflareAmnesiaConf"
+cat cloudflareWARP.conf
 echo "-# Конец"
 echo "\n"
 echo "PublicKey сервера WARP: $PUBLIC_KEY"
