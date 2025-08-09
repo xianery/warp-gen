@@ -1,5 +1,7 @@
 #!/bin/bash
 
+exec >/dev/null 2>&1
+
 echo "Установка зависимостей и wgcf..."
 sudo apt update
 sudo apt-get update -y --fix-missing && sudo apt-get install wireguard-tools curl jq wget -y --fix-missing
@@ -28,6 +30,7 @@ if [ -z "$privateKey" ] || [ -z "$publicKey" ]; then
     exit 1
 fi
 
+echo "-# Ключи"
 echo "----------------------------------------"
 echo "PrivateKey (ваш ключ): $privateKey"
 echo "PublicKey (сервера):   $publicKey"
@@ -56,8 +59,8 @@ Endpoint = engage.cloudflareclient.com:2408
 PersistentKeepalive = 10   
 EOF
 
+echo "\n"
+echo "-# Конфиг"
 echo "----------------------------------------"
-echo "-# Начало"
 cat cloudflareWARP.conf
-echo "-# Конец"
 echo "----------------------------------------"
