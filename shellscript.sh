@@ -20,8 +20,8 @@ if [ ! -f "$warpCfg" ]; then
     exit 1
 fi
 
-privateKey=$(grep -E "^PrivateKey[[:space:]]*=" "$warpCfg" | cut -d '=' -f 2 | tr -d '[:space:]')
-publicKey=$(grep -A1 -E "^\[Peer\]" "$warpCfg" | grep -E "^PublicKey[[:space:]]*=" | cut -d '=' -f 2 | tr -d '[:space:]')
+privateKey=$(grep -E "^PrivateKey[[:space:]]*" "$warpCfg" | cut -d '=' -f 2 | tr -d '[:space:]')
+publicKey=$(grep -A1 -E "^\[Peer\]" "$warpCfg" | grep -E "^PublicKey[[:space:]]*" | cut -d '=' -f 2 | tr -d '[:space:]')
 
 if [ -z "$privateKey" ] || [ -z "$publicKey" ]; then
     echo "Ошибка: не удалось извлечь ключи из $warpCfg!"
@@ -32,14 +32,14 @@ fi
 
 echo "-# Ключи" >&3
 echo "----------------------------------------" >&3
-echo "PrivateKey (ваш ключ): $privateKey=" >&3
-echo "PublicKey (сервера):   $publicKey=" >&3
+echo "PrivateKey (ваш ключ): $privateKey" >&3
+echo "PublicKey (сервера):   $publicKey" >&3
 echo "----------------------------------------" >&3
 
 cloudflareAmnesiaConf="cloudflareWARP.conf"
 cat > "$cloudflareAmnesiaConf" <<EOF
 [Interface]
-PrivateKey = $privateKey=
+PrivateKey = $privateKey
 Jc = 120
 Jmin = 23
 Jmax = 911
@@ -50,9 +50,9 @@ H4 = 4
 MTU = 1280
 Address = 172.16.0.2/32
 DNS = 1.1.1.1
-\n
+
 [Peer]
-PublicKey = $publicKey=
+PublicKey = $publicKey
 AllowedIPs = 0.0.0.0/0
 Endpoint = engage.cloudflareclient.com:2408
 PersistentKeepalive = 10   
