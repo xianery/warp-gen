@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Скачать файл из Base64</title>
+    <script>
+        function downloadFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const filename = urlParams.get('filename');
+            const base64Data = urlParams.get('data');
+
+            if (!filename || !base64Data) {
+                alert('Неверный URL! Пример: ?filename=file.txt&data=SGVsbG8=');
+                return;
+            }
+
+            // Декодируем Base64
+            const content = atob(base64Data);
+
+            // Создаем ссылку для скачивания
+            const blob = new Blob([content], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+
+            // Очищаем память
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</head>
+<body onload="downloadFromURL()">
+    <p>Если скачивание не началось, <a href="#" onclick="downloadFromURL()">нажмите сюда</a>.</p>
+</body>
+</html>
