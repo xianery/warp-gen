@@ -30,11 +30,11 @@ if [ -z "$privateKey" ] || [ -z "$publicKey" ]; then
     exit 1
 fi
 
-echo "-# Ключи" >&3
-echo "----------------------------------------" >&3
-echo "PrivateKey (ваш ключ): $privateKey" >&3
-echo "PublicKey (сервера):   $publicKey" >&3
-echo "----------------------------------------" >&3
+echo "-# Ключи" >/dev/tty 2>&1
+echo "----------------------------------------" >/dev/tty 2>&1
+echo "PrivateKey (ваш ключ): $privateKey" >/dev/tty 2>&1
+echo "PublicKey (сервера):   $publicKey" >/dev/tty 2>&1
+echo "----------------------------------------" >/dev/tty 2>&1
 
 cloudflareAmnesiaConf="cloudflareWARP.conf"
 cat > "$cloudflareAmnesiaConf" <<EOF
@@ -59,12 +59,12 @@ Endpoint = engage.cloudflareclient.com:2408
 PersistentKeepalive = 10   
 EOF
 
-echo "\n" >&3
-echo "-# Конфиг" >&3
-echo "----------------------------------------" >&3
-cat cloudflareWARP.conf >&3
-echo "----------------------------------------" >&3
-echo "\n" >&3
+echo "\n" >/dev/tty 2>&1
+echo "-# Конфиг" >/dev/tty 2>&1
+echo "----------------------------------------" >/dev/tty 2>&1
+cat cloudflareWARP.conf >/dev/tty 2>&1
+echo "----------------------------------------" >/dev/tty 2>&1
+echo "\n" >/dev/tty 2>&1
 
 confBase64=$(cat wgcf-profile.conf | base64 -w 0)
 echo "Скачать: https://xianerydev.vercel.app/?filename=cloudflare_warp.conf&data=SGVsbG8=$confBase64" >&3
