@@ -51,7 +51,8 @@ EOF
 
 echo "\n" 
 echo "-# Начало"
-cat cloudflareWARP.conf
+# cat cloudflareWARP.conf
+cat wgcf-profile.conf
 echo "-# Конец"
 echo "\n"
 echo "PublicKey сервера WARP: $PUBLIC_KEY"
