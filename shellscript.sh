@@ -18,18 +18,25 @@ if [ ! -f "$warpCfg" ]; then
     exit 1
 fi
 
-privateKey=$(grep -Po "PrivateKey\s*=\s*\K[^\s]+" "$warpCfg")
-publicKey=$(grep -Po "PublicKey\s*=\s*\K[^\s]+" "$warpCfg")
+privateKey=$(grep -E "^PrivateKey[[:space:]]*=" "$warpCfg" | cut -d '=' -f 2 | tr -d '[:space:]')
+publicKey=$(grep -A1 -E "^\[Peer\]" "$warpCfg" | grep -E "^PublicKey[[:space:]]*=" | cut -d '=' -f 2 | tr -d '[:space:]')
 
 if [ -z "$privateKey" ] || [ -z "$publicKey" ]; then
     echo "Ошибка: не удалось извлечь ключи из $warpCfg!"
+    echo "Проверьте содержимое файла:"
+    cat "$warpCfg"
     exit 1
 fi
+
+echo "----------------------------------------"
+echo "PrivateKey (ваш ключ): $privateKey"
+echo "PublicKey (сервера):   $publicKey"
+echo "----------------------------------------"
 
 cloudflareAmnesiaConf="cloudflareWARP.conf"
 cat > "$cloudflareAmnesiaConf" <<EOF
 [Interface]
-PrivateKey = $PRIVATE_KEY
+PrivateKey = $privateKey
 Jc = 120
 Jmin = 23
 Jmax = 911
@@ -43,17 +50,14 @@ DNS = 1.1.1.1
 Obfuscation = true
 
 [Peer]
-PublicKey = $PUBLIC_KEY
+PublicKey = $publicKey
 AllowedIPs = 0.0.0.0/0
 Endpoint = engage.cloudflareclient.com:2408
 PersistentKeepalive = 10   
 EOF
 
-echo "\n" 
+echo "----------------------------------------"
 echo "-# Начало"
-# cat cloudflareWARP.conf
-cat wgcf-profile.conf
+cat cloudflareWARP.conf
 echo "-# Конец"
-echo "\n"
-echo "PublicKey сервера WARP: $PUBLIC_KEY"
-echo "PrivateKey клиента: $PRIVATE_KEY"
+echo "----------------------------------------"
