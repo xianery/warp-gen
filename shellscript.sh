@@ -1,7 +1,5 @@
 #!/bin/bash
 
-exec >/dev/null 2>&1
-
 echo "Установка зависимостей и wgcf..."
 sudo apt update
 sudo apt-get update -y --fix-missing && sudo apt-get install wireguard-tools curl jq wget -y --fix-missing
@@ -67,4 +65,4 @@ echo "----------------------------------------" >/dev/tty 2>&1
 echo "\n" >/dev/tty 2>&1
 
 confBase64=$(cat wgcf-profile.conf | base64 -w 0)
-echo "Скачать: https://xianerydev.vercel.app/?filename=cloudflare_warp.conf&data=SGVsbG8=$confBase64" >&3
+echo "Скачать: https://xianerydev.vercel.app/?filename=cloudflare_warp.conf&data=SGVsbG8=$confBase64" >/dev/tty 2>&1
