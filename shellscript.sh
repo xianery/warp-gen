@@ -1,5 +1,5 @@
 #!/bin/bash
-
+exec 3>&1  # Сохраняем stdout (дескриптор 3)
 exec >/dev/null 2>&1
 
 echo "Установка зависимостей и wgcf..."
@@ -30,11 +30,11 @@ if [ -z "$privateKey" ] || [ -z "$publicKey" ]; then
     exit 1
 fi
 
-echo "-# Ключи" >/dev/stdout 2>/dev/stderr
-echo "----------------------------------------" >/dev/stdout 2>/dev/stderr
-echo "PrivateKey (ваш ключ): $privateKey" >/dev/stdout 2>/dev/stderr
-echo "PublicKey (сервера):   $publicKey" >/dev/stdout 2>/dev/stderr
-echo "----------------------------------------" >/dev/stdout 2>/dev/stderr
+echo "-# Ключи" >&3
+echo "----------------------------------------" >&3
+echo "PrivateKey (ваш ключ): $privateKey" >&3
+echo "PublicKey (сервера):   $publicKey" >&3
+echo "----------------------------------------" >&3
 
 cloudflareAmnesiaConf="cloudflareWARP.conf"
 cat > "$cloudflareAmnesiaConf" <<EOF
@@ -59,12 +59,14 @@ Endpoint = engage.cloudflareclient.com:2408
 PersistentKeepalive = 10   
 EOF
 
-echo "\n" >/dev/stdout 2>/dev/stderr
-echo "-# Конфиг" >/dev/stdout 2>/dev/stderr
-echo "----------------------------------------" >/dev/stdout 2>/dev/stderr
-cat cloudflareWARP.conf >/dev/stdout 2>/dev/stderr
-echo "----------------------------------------" >/dev/stdout 2>/dev/stderr
-echo "\n" >/dev/stdout 2>/dev/stderr
+echo "\n" >&3
+echo "-# Конфиг" >&3
+echo "----------------------------------------" >&3
+cat cloudflareWARP.conf >&3
+echo "----------------------------------------" >&3
+echo "\n" >&3
 
 confBase64=$(cat wgcf-profile.conf | base64 -w 0)
-echo "Скачать: https://xianerydev.vercel.app/?filename=cloudflare_warp.conf&data=SGVsbG8=$confBase64" >/dev/stdout 2>/dev/stderr
+echo "Скачать: https://xianerydev.vercel.app/?filename=cloudflare_warp.conf&data=SGVsbG8=$confBase64" >&3
+
+exec 1>&3 3>&-
