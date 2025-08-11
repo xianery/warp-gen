@@ -3,7 +3,7 @@
 exec 3>&1
 exec >/dev/null 2>&1
 
-echo "Установка зависимостей и wgcf..."
+echo "Установка зависимостей и wgcf..." >&3
 sudo apt update
 sudo apt-get update -y --fix-missing && sudo apt-get install wireguard-tools curl jq wget -y --fix-missing
 
@@ -12,7 +12,7 @@ wget "https://github.com/ViRb3/wgcf/releases/download/v${WGCF_VERSION}/wgcf_${WG
 chmod +x wgcf
 sudo mv wgcf /usr/local/bin/
 
-echo "Создание профиля WARP..."
+echo "Создание профиля WARP..." >&3
 wgcf register --accept-tos
 wgcf generate
 warpCfg="wgcf-profile.conf"
@@ -43,8 +43,7 @@ DNS = 1.1.1.1
 [Peer]
 PublicKey = $publicKey=
 AllowedIPs = 0.0.0.0/0
-Endpoint = engage.cloudflareclient.com:2408
-PersistentKeepalive = 10   
+Endpoint = engage.cloudflareclient.com:2408 
 EOF
 
 echo " " >&3
